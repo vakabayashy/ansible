@@ -1,0 +1,6 @@
+---
+- name: Install nginx on app
+  hosts: web
+  roles:
+    - nginx_install
+    - nginx_config

@@ -1,0 +1,11 @@
+---
+#- name: Create home directory for www
+#  file:
+#    path: "/var/www/{{ inventory_hostname }}/.well-known/acme-challenge"
+#    state: directory
+#    owner: root
+#    group: root
+#    mode: 0755
+
+- include_tasks: "{{ ansible_os_family }}.yml"
+

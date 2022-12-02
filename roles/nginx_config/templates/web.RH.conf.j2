@@ -1,0 +1,29 @@
+server {
+    listen 80 default;
+    server_name {{ inventory_hostname }};
+
+    access_log /var/log/nginx/{{ inventory_hostname }}.access.log;
+    error_log /var/log/nginx/{{ inventory_hostname }}.error.log;
+
+    index index.html;
+    root /var/www/{{ inventory_hostname }};
+
+    location / {
+
+    }
+
+    location /.well-known/acme-challenge/ {
+        allow all;
+        root /var/www/{{ inventory_hostname }};
+    }
+}
+
+server {
+    if ($host = {{ inventory_hostname }}) {
+        return 301 https://$host$request_uri;
+    }
+}
+
+
+
+

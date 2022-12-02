@@ -1,0 +1,54 @@
+resolver 8.8.8.8 valid=30s ipv6=off;
+
+upstream exampl {
+    server example.com;
+}
+map "$http_user_agent" $arg_brow {
+            "~*Firefox" "Firefox";
+            default   "Noname";
+        }
+
+server {
+    listen 80 default;
+    server_name {{ inventory_hostname }};
+
+    access_log /var/log/nginx/xip.access.log logz;
+    error_log /var/log/nginx/xip.error.log;
+
+    index index.nginx-debian.html;
+    auth_basic           "Restricted Area";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+
+    location / {
+        root /var/www/html;
+        deny 10.10.10.10;
+    }
+    location /example/ {
+        proxy_pass http://exampl;
+        proxy_set_header Host example.com;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        deny 10.10.10.10;
+    }
+
+    location /rbm_images/ {
+        autoindex on;
+        alias /var/www/rebrain/images/;
+        deny 10.10.10.10;
+    }
+    location /browser/ {
+        deny 10.10.10.10;
+        set $browser "Hello, $arg_brow";
+        add_header X-my-header $browser;
+        return 200 "$browser";
+    }
+    location /noauth/ {
+        root /var/www/html;
+        deny 10.10.10.10;
+        auth_basic off;
+    }
+
+
+}
+
+

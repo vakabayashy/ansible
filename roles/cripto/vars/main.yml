@@ -1,0 +1,4 @@
+---
+   my_email: "al_glop@mail.ru"
+   site_available: "/etc/nginx/sites-available/"
+   site_enabled: "/etc/nginx/sites-enabled/"

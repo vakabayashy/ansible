@@ -1,0 +1,6 @@
+---
+    to_remove:
+     # - "/var/www/html/index.nginx-debian.html"
+      - "{{ site_enabled }}default"
+    nginx_inst:
+      - "nginx-full"

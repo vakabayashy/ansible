@@ -1,0 +1,4 @@
+---
+argument_specs:
+    main:
+      short_description: Setting up virtual hosts configs and sites templates

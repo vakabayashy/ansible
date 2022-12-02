@@ -1,0 +1,10 @@
+---
+
+- include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Adding cron job for certificate renew and nginx reload
+  cron:
+    name: "cron job for certificate renew and nginx reload"
+    minute: 10
+    hour: 2
+    job: "/usr/local/bin/certbot renew 2> /dev/null && nginx -s reload 2> /dev/null"

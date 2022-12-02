@@ -1,0 +1,21 @@
+#Yandex keys
+Y_cloud_id = ""
+Y_folder_id = ""
+my_task_name = "lnxa-06"
+Y_zone = "ru-central1-a"
+Y_image_id = {
+  Ubuntu20 = "fd83n3uou8m03iq9gavu"
+  CentOS8 = "fd83pvgnucub7cvib759"
+}
+
+
+pub_ssh = ""
+aws_ak = ""
+aws_sk = ""
+my_pub_ssh = ""
+passwd = ""
+ssh_path = "~/.ssh/id_rsa"
+devs = {
+  email = "al-glop-at-mail-ru"
+  prefix = ["log"]
+}

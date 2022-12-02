@@ -1,0 +1,24 @@
+---
+- name: Add nginx site html RedHat
+  template:
+    src: index.html.j2
+    dest: "/var/www/{{ inventory_hostname }}/index.html"
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  notify:
+    - reload nginx
+
+- name: Add nginx site config RedHat
+  template:
+    src: "web.RH.conf.j2"
+    dest: "/etc/nginx/conf.d/{{ inventory_hostname }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  notify: reload nginx
+
+- name: Flush handlers
+  meta: flush_handlers

@@ -1,0 +1,15 @@
+---
+dependencies:
+  - role: nginx_install
+    vars:
+      worker_connections: 1024
+      sendfile: "on"
+      tcp_nodelay: "on"
+      tcp_nopush: "on"
+  - role: nginx_config
+  - role: cripto
+
+
+argument_specs:
+    main:
+      short_description: Nginx dependencies role.

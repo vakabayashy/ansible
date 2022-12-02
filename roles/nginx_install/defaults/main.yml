@@ -1,0 +1,7 @@
+---
+    worker_connections: 762
+    sendfile: "on"
+    tcp_nodelay: "on"
+    tcp_nopush: "on"
+    ports:
+      - { name: 'http', port: 80 }

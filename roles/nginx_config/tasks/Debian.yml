@@ -1,0 +1,53 @@
+---
+- name: Create the Password File Using the OpenSSL Utilities
+  command: sh -c "echo -n 'rebrain:$apr1$QRJTwIAU$GOzCzWOsc8a03G0yeO/bj/' >> /etc/nginx/.htpasswd"
+  run_once: true
+
+- name: Remove mail module
+  file:
+   path: "/etc/nginx/modules-enabled/50-mod-mail.conf"
+   state: absent
+  run_once: true
+
+- name: Logo
+  copy:
+   src: "logo.png"
+   dest: "/var/www/rebrain/images/"
+   owner: root
+   group: root
+   mode: 0644
+   force: yes
+
+- name: Add nginx site config Debian
+  template:
+    src: "web.conf.j2"
+    dest: "{{ site_available }}{{ inventory_hostname }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  notify:
+    - reload nginx
+
+#- name: Add nginx site html Debian
+#  template:
+#    src: index.html.j2
+#    dest: "/var/www/{{ inventory_hostname }}/index.html"
+#    owner: root
+#    group: root
+#    mode: 0644
+#    force: yes
+#  notify:
+#    - reload nginx
+
+- name: Add symlinks for conf Debian
+  file:
+   src: "{{ site_available }}{{ inventory_hostname }}.conf"
+   dest: "{{ site_enabled }}{{ inventory_hostname }}.conf"
+   state: link
+   force: yes
+  notify:
+    - reload nginx
+
+- name: Flush handlers
+  meta: flush_handlers

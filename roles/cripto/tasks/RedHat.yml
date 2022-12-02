@@ -1,0 +1,30 @@
+---
+- name: Install certbot RedHat
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - epel-release
+    - certbot
+    - python3-certbot-nginx
+  notify: Start nginx
+
+- name: Changing permissions to root dir
+  command: chcon -vR system_u:object_r:httpd_sys_content_t:s0 /var/www/{{ inventory_hostname }}/
+
+- name: Certbot sertificate generate
+  command: sudo certbot certonly --webroot -w /var/www/{{ inventory_hostname }} --keep-until-expiring -n --agree-tos -d {{ inventory_hostname }} -m {{ my_email }}
+
+- name: Add nginx SSL conf RedHat
+  template:
+    src: ssl.RH.conf.j2
+    dest: "/etc/nginx/conf.d/ssl_{{ inventory_hostname }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  notify: reload nginx
+
+- name: Flush handlers
+  meta: flush_handlers
